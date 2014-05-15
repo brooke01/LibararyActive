@@ -9,7 +9,7 @@ Public Class frmMain
         Try
             '1讀取XML來源
             Dim doc As New XmlDocument
-            doc.Load(txtSourceXML.Text)
+            doc.Load(cmbRSSLink.SelectedValue)
 
             '2掃描XML所有項目並儲存
             Dim root As XmlElement = doc.DocumentElement '先生出一個root
@@ -41,8 +41,8 @@ Public Class frmMain
     End Sub
 
     Private Sub btnEXPORT_Click(sender As Object, e As EventArgs) Handles btnEXPORT.Click
-        SaveFileDialog1.FileName = "C:\匯出EXCEL.xls"
-        SaveFileDialog1.InitialDirectory = "C:\"
+        SaveFileDialog1.FileName = "匯出EXCEL.xls"
+        SaveFileDialog1.InitialDirectory = Directory.GetCurrentDirectory
         SaveFileDialog1.Filter = "Excel File|*.xls"
         SaveFileDialog1.Title = "請選擇EXCEL匯出儲存路徑"
         SaveFileDialog1.RestoreDirectory = True
@@ -50,18 +50,51 @@ Public Class frmMain
         SaveFileDialog1.CheckPathExists = True
         If SaveFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
             Try
-                Dim ExcelNPOI As New NPOIHelper
-                Dim fs As System.IO.FileStream = New System.IO.FileStream(SaveFileDialog1.FileName, FileMode.Create, FileAccess.Write)
-                Dim data As Byte() = ExcelNPOI.SaveDataToExcel(dtActive)
-                fs.Write(data, 0, data.Length)
-                fs.Flush()
-                fs.Close() '關閉FileStream
-                fs.Dispose() '釋放FileStream所有資源
-                MsgBox("已匯出Excel檔", 0)
+                If (dtActive Is Nothing) = False Then
+                    Dim ExcelNPOI As New NPOIHelper
+                    Dim fs As System.IO.FileStream = New System.IO.FileStream(SaveFileDialog1.FileName, FileMode.Create, FileAccess.Write)
+                    Dim data() As Byte = Nothing
+                    data = ExcelNPOI.SaveDataToExcel(dtActive)
+                    fs.Write(data, 0, data.Length)
+                    fs.Flush()
+                    fs.Close() '關閉FileStream
+                    fs.Dispose() '釋放FileStream所有資源
+                    MsgBox("完成", 0)
+                Else
+                    MsgBox("無資料")
+                End If
 
             Catch ex As Exception
                 MsgBox(ex.ToString)
             End Try
         End If
+    End Sub
+
+    Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        Dim dtRSSLink As New DataTable
+        dtRSSLink.Columns.Add("LibName")
+        dtRSSLink.Columns.Add("LibLink")
+
+        Dim dr As DataRow
+        dr = dtRSSLink.NewRow
+        dr("LibName") = "台北市圖"
+        dr("LibLink") = "http://www.tpml.edu.tw/search.getService.asp?serviceName=GIP.xdrss&mp=104021&ctNodeId=57441"
+        dtRSSLink.Rows.Add(dr)
+
+        dr = dtRSSLink.NewRow
+        dr("LibName") = "新北市圖"
+        dr("LibLink") = "http://www.tphcc.gov.tw/MainPortal/htmlcnt/rss/ActvInfo"
+        dtRSSLink.Rows.Add(dr)
+
+        dr = dtRSSLink.NewRow
+        dr("LibName") = "高雄市圖"
+        dr("LibLink") = "http://www.ksml.edu.tw/informactions/RSS.aspx?kind=1"
+        dtRSSLink.Rows.Add(dr)
+
+        cmbRSSLink.DataSource = dtRSSLink
+        cmbRSSLink.DisplayMember = "LibName"
+        cmbRSSLink.ValueMember = "LibLink"
+
     End Sub
 End Class

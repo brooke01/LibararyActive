@@ -24,17 +24,17 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.btnActiveLoad = New System.Windows.Forms.Button()
         Me.dgvActive = New System.Windows.Forms.DataGridView()
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.txtSourceXML = New System.Windows.Forms.TextBox()
         Me.btnEXPORT = New System.Windows.Forms.Button()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
+        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.cmbRSSLink = New System.Windows.Forms.ComboBox()
         CType(Me.dgvActive, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.TableLayoutPanel1.SuspendLayout()
+        Me.TableLayoutPanel2.SuspendLayout()
         Me.SuspendLayout()
         '
         'btnActiveLoad
         '
-        Me.btnActiveLoad.Location = New System.Drawing.Point(12, 12)
+        Me.btnActiveLoad.Location = New System.Drawing.Point(3, 3)
         Me.btnActiveLoad.Name = "btnActiveLoad"
         Me.btnActiveLoad.Size = New System.Drawing.Size(75, 23)
         Me.btnActiveLoad.TabIndex = 0
@@ -44,68 +44,69 @@ Partial Class frmMain
         'dgvActive
         '
         Me.dgvActive.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.TableLayoutPanel2.SetColumnSpan(Me.dgvActive, 2)
         Me.dgvActive.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dgvActive.Location = New System.Drawing.Point(3, 3)
+        Me.dgvActive.Location = New System.Drawing.Point(3, 57)
         Me.dgvActive.Name = "dgvActive"
         Me.dgvActive.RowTemplate.Height = 24
-        Me.dgvActive.Size = New System.Drawing.Size(417, 199)
+        Me.dgvActive.Size = New System.Drawing.Size(407, 106)
         Me.dgvActive.TabIndex = 1
-        '
-        'TableLayoutPanel1
-        '
-        Me.TableLayoutPanel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TableLayoutPanel1.ColumnCount = 1
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.dgvActive, 0, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(12, 41)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 1
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(423, 205)
-        Me.TableLayoutPanel1.TabIndex = 2
-        '
-        'txtSourceXML
-        '
-        Me.txtSourceXML.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtSourceXML.Location = New System.Drawing.Point(94, 13)
-        Me.txtSourceXML.Name = "txtSourceXML"
-        Me.txtSourceXML.Size = New System.Drawing.Size(341, 22)
-        Me.txtSourceXML.TabIndex = 3
-        Me.txtSourceXML.Text = "http://www.tphcc.gov.tw/MainPortal/htmlcnt/rss/ActvInfo"
         '
         'btnEXPORT
         '
-        Me.btnEXPORT.Location = New System.Drawing.Point(12, 252)
+        Me.TableLayoutPanel2.SetColumnSpan(Me.btnEXPORT, 2)
+        Me.btnEXPORT.Location = New System.Drawing.Point(3, 169)
         Me.btnEXPORT.Name = "btnEXPORT"
-        Me.btnEXPORT.Size = New System.Drawing.Size(423, 23)
+        Me.btnEXPORT.Size = New System.Drawing.Size(404, 23)
         Me.btnEXPORT.TabIndex = 4
         Me.btnEXPORT.Text = "EXCEL匯出"
         Me.btnEXPORT.UseVisualStyleBackColor = True
+        '
+        'TableLayoutPanel2
+        '
+        Me.TableLayoutPanel2.ColumnCount = 2
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel2.Controls.Add(Me.cmbRSSLink, 1, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.dgvActive, 0, 1)
+        Me.TableLayoutPanel2.Controls.Add(Me.btnEXPORT, 0, 2)
+        Me.TableLayoutPanel2.Controls.Add(Me.btnActiveLoad, 0, 0)
+        Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel2.Location = New System.Drawing.Point(0, 0)
+        Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
+        Me.TableLayoutPanel2.RowCount = 3
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 32.78008!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 67.21992!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 95.0!))
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(422, 286)
+        Me.TableLayoutPanel2.TabIndex = 5
+        '
+        'cmbRSSLink
+        '
+        Me.cmbRSSLink.FormattingEnabled = True
+        Me.cmbRSSLink.Location = New System.Drawing.Point(220, 8)
+        Me.cmbRSSLink.Name = "cmbRSSLink"
+        Me.cmbRSSLink.Size = New System.Drawing.Size(187, 20)
+        Me.cmbRSSLink.TabIndex = 6
         '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(447, 286)
-        Me.Controls.Add(Me.btnEXPORT)
-        Me.Controls.Add(Me.txtSourceXML)
-        Me.Controls.Add(Me.TableLayoutPanel1)
-        Me.Controls.Add(Me.btnActiveLoad)
+        Me.ClientSize = New System.Drawing.Size(422, 286)
+        Me.Controls.Add(Me.TableLayoutPanel2)
         Me.Name = "frmMain"
         Me.Text = "擷取圖書館活動資訊"
         CType(Me.dgvActive, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.TableLayoutPanel2.ResumeLayout(False)
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Friend WithEvents btnActiveLoad As System.Windows.Forms.Button
     Friend WithEvents dgvActive As System.Windows.Forms.DataGridView
-    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents txtSourceXML As System.Windows.Forms.TextBox
     Friend WithEvents btnEXPORT As System.Windows.Forms.Button
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
+    Friend WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents cmbRSSLink As System.Windows.Forms.ComboBox
 
 End Class

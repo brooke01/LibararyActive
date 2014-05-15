@@ -46,33 +46,26 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Google 雲端硬碟\1範例庫\Component\BLibrary\BLibrary\bin\Debug\BLibrary.dll</HintPath>
+    <Reference Include="BLibrary">
+      <HintPath>..\..\..\Google 雲端硬碟\1範例庫\Component\BLibrary\BLibrary\bin\Debug\BLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI, Version=1.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Google 雲端硬碟\1範例庫\Component\BLibrary\BLibrary\bin\Debug\NPOI.dll</HintPath>
+    <Reference Include="NPOI">
+      <HintPath>..\..\..\Google 雲端硬碟\1範例庫\Component\BLibrary\BLibrary\bin\Debug\NPOI.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.DDF, Version=1.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Google 雲端硬碟\1範例庫\Component\BLibrary\BLibrary\bin\Debug\NPOI.DDF.dll</HintPath>
+    <Reference Include="NPOI.DDF">
+      <HintPath>..\..\..\Google 雲端硬碟\1範例庫\Component\BLibrary\BLibrary\bin\Debug\NPOI.DDF.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.HPSF, Version=1.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Google 雲端硬碟\1範例庫\Component\BLibrary\BLibrary\bin\Debug\NPOI.HPSF.dll</HintPath>
+    <Reference Include="NPOI.HPSF">
+      <HintPath>..\..\..\Google 雲端硬碟\1範例庫\Component\BLibrary\BLibrary\bin\Debug\NPOI.HPSF.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.HSSF, Version=1.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Google 雲端硬碟\1範例庫\Component\BLibrary\BLibrary\bin\Debug\NPOI.HSSF.dll</HintPath>
+    <Reference Include="NPOI.HSSF">
+      <HintPath>..\..\..\Google 雲端硬碟\1範例庫\Component\BLibrary\BLibrary\bin\Debug\NPOI.HSSF.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.POIFS, Version=1.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Google 雲端硬碟\1範例庫\Component\BLibrary\BLibrary\bin\Debug\NPOI.POIFS.dll</HintPath>
+    <Reference Include="NPOI.POIFS">
+      <HintPath>..\..\..\Google 雲端硬碟\1範例庫\Component\BLibrary\BLibrary\bin\Debug\NPOI.POIFS.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.Util, Version=1.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Google 雲端硬碟\1範例庫\Component\BLibrary\BLibrary\bin\Debug\NPOI.Util.dll</HintPath>
+    <Reference Include="NPOI.Util">
+      <HintPath>..\..\..\Google 雲端硬碟\1範例庫\Component\BLibrary\BLibrary\bin\Debug\NPOI.Util.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

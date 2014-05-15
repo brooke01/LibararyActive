@@ -71,26 +71,27 @@ Public Class frmMain
     End Sub
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
+        Me.Text &= " - " & "創作人:Brooke v" & My.Application.Info.Version.ToString
         Dim dtRSSLink As New DataTable
         dtRSSLink.Columns.Add("LibName")
         dtRSSLink.Columns.Add("LibLink")
 
         Dim dr As DataRow
-        dr = dtRSSLink.NewRow
-        dr("LibName") = "台北市圖"
-        dr("LibLink") = "http://www.tpml.edu.tw/search.getService.asp?serviceName=GIP.xdrss&mp=104021&ctNodeId=57441"
-        dtRSSLink.Rows.Add(dr)
 
         dr = dtRSSLink.NewRow
         dr("LibName") = "新北市圖"
         dr("LibLink") = "http://www.tphcc.gov.tw/MainPortal/htmlcnt/rss/ActvInfo"
         dtRSSLink.Rows.Add(dr)
 
-        dr = dtRSSLink.NewRow
-        dr("LibName") = "高雄市圖"
-        dr("LibLink") = "http://www.ksml.edu.tw/informactions/RSS.aspx?kind=1"
-        dtRSSLink.Rows.Add(dr)
+        'dr = dtRSSLink.NewRow
+        'dr("LibName") = "台北市圖"
+        'dr("LibLink") = "http://www.tpml.edu.tw/search.getService.asp?serviceName=GIP.xdrss&mp=104021&ctNodeId=57441"
+        'dtRSSLink.Rows.Add(dr)
+
+        'dr = dtRSSLink.NewRow
+        'dr("LibName") = "高雄市圖"
+        'dr("LibLink") = "http://www.ksml.edu.tw/informactions/RSS.aspx?kind=1"
+        'dtRSSLink.Rows.Add(dr)
 
         cmbRSSLink.DataSource = dtRSSLink
         cmbRSSLink.DisplayMember = "LibName"

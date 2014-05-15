@@ -34,11 +34,12 @@ Partial Class frmMain
         '
         'btnActiveLoad
         '
+        Me.btnActiveLoad.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnActiveLoad.Location = New System.Drawing.Point(3, 3)
         Me.btnActiveLoad.Name = "btnActiveLoad"
-        Me.btnActiveLoad.Size = New System.Drawing.Size(75, 23)
+        Me.btnActiveLoad.Size = New System.Drawing.Size(75, 20)
         Me.btnActiveLoad.TabIndex = 0
-        Me.btnActiveLoad.Text = "讀取活動"
+        Me.btnActiveLoad.Text = "讀取圖書館"
         Me.btnActiveLoad.UseVisualStyleBackColor = True
         '
         'dgvActive
@@ -46,18 +47,19 @@ Partial Class frmMain
         Me.dgvActive.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.TableLayoutPanel2.SetColumnSpan(Me.dgvActive, 2)
         Me.dgvActive.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dgvActive.Location = New System.Drawing.Point(3, 57)
+        Me.dgvActive.Location = New System.Drawing.Point(3, 29)
         Me.dgvActive.Name = "dgvActive"
         Me.dgvActive.RowTemplate.Height = 24
-        Me.dgvActive.Size = New System.Drawing.Size(407, 106)
+        Me.dgvActive.Size = New System.Drawing.Size(433, 225)
         Me.dgvActive.TabIndex = 1
         '
         'btnEXPORT
         '
         Me.TableLayoutPanel2.SetColumnSpan(Me.btnEXPORT, 2)
-        Me.btnEXPORT.Location = New System.Drawing.Point(3, 169)
+        Me.btnEXPORT.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnEXPORT.Location = New System.Drawing.Point(3, 260)
         Me.btnEXPORT.Name = "btnEXPORT"
-        Me.btnEXPORT.Size = New System.Drawing.Size(404, 23)
+        Me.btnEXPORT.Size = New System.Drawing.Size(433, 23)
         Me.btnEXPORT.TabIndex = 4
         Me.btnEXPORT.Text = "EXCEL匯出"
         Me.btnEXPORT.UseVisualStyleBackColor = True
@@ -75,28 +77,29 @@ Partial Class frmMain
         Me.TableLayoutPanel2.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
         Me.TableLayoutPanel2.RowCount = 3
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 32.78008!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 67.21992!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 95.0!))
-        Me.TableLayoutPanel2.Size = New System.Drawing.Size(422, 286)
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(439, 286)
         Me.TableLayoutPanel2.TabIndex = 5
         '
         'cmbRSSLink
         '
+        Me.cmbRSSLink.Dock = System.Windows.Forms.DockStyle.Fill
         Me.cmbRSSLink.FormattingEnabled = True
-        Me.cmbRSSLink.Location = New System.Drawing.Point(220, 8)
+        Me.cmbRSSLink.Location = New System.Drawing.Point(84, 3)
         Me.cmbRSSLink.Name = "cmbRSSLink"
-        Me.cmbRSSLink.Size = New System.Drawing.Size(187, 20)
+        Me.cmbRSSLink.Size = New System.Drawing.Size(352, 20)
         Me.cmbRSSLink.TabIndex = 6
         '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(422, 286)
+        Me.ClientSize = New System.Drawing.Size(439, 286)
         Me.Controls.Add(Me.TableLayoutPanel2)
         Me.Name = "frmMain"
-        Me.Text = "擷取圖書館活動資訊"
+        Me.Text = "查詢圖書館活動資訊"
         CType(Me.dgvActive, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TableLayoutPanel2.ResumeLayout(False)
         Me.ResumeLayout(False)

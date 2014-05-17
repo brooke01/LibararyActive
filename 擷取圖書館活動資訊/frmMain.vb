@@ -1,11 +1,29 @@
 ﻿Imports System.Xml
 Imports BLibrary
 Imports System.IO
+Imports System.Text
 
 Public Class frmMain
-    Dim dtActive As DataTable
+    Dim DT_ACTIVE As DataTable
 
     Private Sub btnActiveLoad_Click(sender As Object, e As EventArgs) Handles btnActiveLoad.Click
+        If cmbRSSLink.SelectedText = "新北市圖" Or cmbRSSLink.SelectedText = "台北市圖" Then
+            readXmlMethod()
+        ElseIf cmbRSSLink.SelectedText = "高雄市圖" Then
+            readHtmlMethod()
+        Else
+            MsgBox("cmbRSSLink無此選項")
+        End If
+    End Sub
+
+    Private Sub readHtmlMethod()
+        Dim webBrower As New WebBrowser
+        webBrower.Navigate(cmbRSSLink.SelectedValue)
+        Dim Htmldoc As HtmlDocument
+
+    End Sub
+
+    Private Sub readXmlMethod()
         Try
             '1讀取XML來源
             Dim doc As New XmlDocument
@@ -30,14 +48,13 @@ Public Class frmMain
             Next
 
             '3將項目顯示於dgv
-            dtActive = Nothing
-            dtActive = dt.Clone()
-            dtActive = dt.Copy
+            DT_ACTIVE = Nothing
+            DT_ACTIVE = dt.Clone()
+            DT_ACTIVE = dt.Copy
             dgvActive.DataSource = dt
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
-
     End Sub
 
     Private Sub btnEXPORT_Click(sender As Object, e As EventArgs) Handles btnEXPORT.Click
@@ -50,11 +67,11 @@ Public Class frmMain
         SaveFileDialog1.CheckPathExists = True
         If SaveFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
             Try
-                If (dtActive Is Nothing) = False Then
+                If (DT_ACTIVE Is Nothing) = False Then
                     Dim ExcelNPOI As New NPOIHelper
                     Dim fs As System.IO.FileStream = New System.IO.FileStream(SaveFileDialog1.FileName, FileMode.Create, FileAccess.Write)
                     Dim data() As Byte = Nothing
-                    data = ExcelNPOI.SaveDataToExcel(dtActive)
+                    data = ExcelNPOI.SaveDataToExcel(DT_ACTIVE)
                     fs.Write(data, 0, data.Length)
                     fs.Flush()
                     fs.Close() '關閉FileStream
@@ -83,19 +100,22 @@ Public Class frmMain
         dr("LibLink") = "http://www.tphcc.gov.tw/MainPortal/htmlcnt/rss/ActvInfo"
         dtRSSLink.Rows.Add(dr)
 
-        'dr = dtRSSLink.NewRow
-        'dr("LibName") = "台北市圖"
-        'dr("LibLink") = "http://www.tpml.edu.tw/search.getService.asp?serviceName=GIP.xdrss&mp=104021&ctNodeId=57441"
-        'dtRSSLink.Rows.Add(dr)
+        dr = dtRSSLink.NewRow
+        dr("LibName") = "台北市圖"
+        dr("LibLink") = "http://www.tpml.edu.tw/search.getService.asp?serviceName=GIP.xdrss&mp=104021&ctNodeId=57441"
+        dtRSSLink.Rows.Add(dr)
 
-        'dr = dtRSSLink.NewRow
-        'dr("LibName") = "高雄市圖"
-        'dr("LibLink") = "http://www.ksml.edu.tw/informactions/RSS.aspx?kind=1"
-        'dtRSSLink.Rows.Add(dr)
+        dr = dtRSSLink.NewRow
+        dr("LibName") = "高雄市圖"
+        dr("LibLink") = "http://www.ksml.edu.tw/informactions/activity/Activity01.aspx?Page=1"
+        dtRSSLink.Rows.Add(dr)
 
         cmbRSSLink.DataSource = dtRSSLink
         cmbRSSLink.DisplayMember = "LibName"
         cmbRSSLink.ValueMember = "LibLink"
 
     End Sub
+
+
+
 End Class

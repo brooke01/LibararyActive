@@ -13,6 +13,36 @@ Public Class frmMain
     Dim 高雄tatalPage As Integer = -1
     Dim 高雄htmlStream As Stream
 
+    Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.Text &= " - " & "創作人:Brooke v" & My.Application.Info.Version.ToString
+        ToolStripStatusLabel1.Text = ""
+        Dim dtRSSLink As New DataTable
+        dtRSSLink.Columns.Add("LibName")
+        dtRSSLink.Columns.Add("LibLink")
+
+        Dim dr As DataRow
+
+        dr = dtRSSLink.NewRow
+        dr("LibName") = "新北市圖"
+        dr("LibLink") = "http://www.tphcc.gov.tw/MainPortal/htmlcnt/rss/ActvInfo"
+        dtRSSLink.Rows.Add(dr)
+
+        dr = dtRSSLink.NewRow
+        dr("LibName") = "台北市圖"
+        dr("LibLink") = "http://www.tpml.edu.tw/search.getService.asp?serviceName=GIP.xdrss&mp=104021&ctNodeId=57441"
+        dtRSSLink.Rows.Add(dr)
+
+        dr = dtRSSLink.NewRow
+        dr("LibName") = "高雄市圖"
+        dr("LibLink") = "http://www.ksml.edu.tw/informactions/activity/Activity01.aspx"
+        dtRSSLink.Rows.Add(dr)
+
+        cmbRSSLink.DataSource = dtRSSLink
+        cmbRSSLink.DisplayMember = "LibName"
+        cmbRSSLink.ValueMember = "LibLink"
+
+    End Sub
+
     Private Sub btnActiveLoad_Click(sender As Object, e As EventArgs) Handles btnActiveLoad.Click
         If cmbRSSLink.SelectedItem("libName") = "新北市圖" Or cmbRSSLink.SelectedItem("libName") = "台北市圖" Then
             readXmlMethod()
@@ -21,49 +51,6 @@ Public Class frmMain
         Else
             MsgBox("cmbRSSLink無此選項")
         End If
-    End Sub
-
-    Private Sub readHtmlMethod()
-        Try
-            AddHandler webBrower.Navigated, AddressOf WebBrowser1_Navigated '指定webBrower的Navigated事件給WebBrowser1_Navigated方法處理
-            AddHandler Timer1.Tick, AddressOf GetHtml
-            Timer1.Interval = 3000
-
-            Dim dt As New DataTable
-            dt.Columns.Add("標題")
-            dt.Columns.Add("館別")
-            dt.Columns.Add("日期")
-            dt.Columns.Add("報名")
-
-            '先決定活動頁面有幾頁
-            loading = True
-            webBrower.Navigate(cmbRSSLink.SelectedValue) '在Navigate時loading指標為true
-            '在迴圈內是靠timer計數器來讀取網頁，讀完,loading並設成false
-            While (loading)
-                Application.DoEvents()
-            End While
-
-            For i = 1 To 高雄tatalPage
-                loading = True
-                webBrower.Navigate(cmbRSSLink.SelectedValue & "?Page=" & i.ToString & "")
-                While (loading)
-                    Application.DoEvents()
-                End While
-                ConvwertDataTable(dt)
-            Next
-
-            'to datagridview
-            DT_ACTIVE = dt.Clone
-            DT_ACTIVE = dt.Copy
-            dgvActive.DataSource = DT_ACTIVE
-
-        Catch ex As Exception
-            MsgBox(ex.ToString)
-        End Try
-    End Sub
-
-    Private Sub WebBrowser1_Navigated(sender As Object, e As WebBrowserNavigatedEventArgs)
-        Timer1.Start()
     End Sub
 
     Private Sub readXmlMethod()
@@ -130,33 +117,51 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Me.Text &= " - " & "創作人:Brooke v" & My.Application.Info.Version.ToString
-        Dim dtRSSLink As New DataTable
-        dtRSSLink.Columns.Add("LibName")
-        dtRSSLink.Columns.Add("LibLink")
+#Region "高雄特殊讀取方式"
+    Private Sub readHtmlMethod()
+        Try
+            AddHandler webBrower.Navigated, AddressOf WebBrowser1_Navigated '指定webBrower的Navigated事件給WebBrowser1_Navigated方法處理
+            AddHandler Timer1.Tick, AddressOf GetHtml
+            Timer1.Interval = 3000
 
-        Dim dr As DataRow
+            Dim dt As New DataTable
+            dt.Columns.Add("title")
+            dt.Columns.Add("link")
+            dt.Columns.Add("author")
+            dt.Columns.Add("pubDate")
 
-        dr = dtRSSLink.NewRow
-        dr("LibName") = "新北市圖"
-        dr("LibLink") = "http://www.tphcc.gov.tw/MainPortal/htmlcnt/rss/ActvInfo"
-        dtRSSLink.Rows.Add(dr)
+            '先決定活動頁面有幾頁
+            loading = True
+            webBrower.Navigate(cmbRSSLink.SelectedValue) '在Navigate時loading指標為true
+            '在迴圈內是靠timer計數器來讀取網頁，讀完,loading並設成false
+            While (loading)
+                Application.DoEvents()
+            End While
+            ToolStripStatusLabel1.Text = ""
 
-        dr = dtRSSLink.NewRow
-        dr("LibName") = "台北市圖"
-        dr("LibLink") = "http://www.tpml.edu.tw/search.getService.asp?serviceName=GIP.xdrss&mp=104021&ctNodeId=57441"
-        dtRSSLink.Rows.Add(dr)
+            For i = 1 To 高雄tatalPage
+                loading = True
+                webBrower.Navigate(cmbRSSLink.SelectedValue & "?Page=" & i.ToString & "")
+                While (loading)
+                    Application.DoEvents()
+                End While
+                ConvwertDataTable(dt)
+            Next
+            ToolStripStatusLabel1.Text = ""
 
-        dr = dtRSSLink.NewRow
-        dr("LibName") = "高雄市圖"
-        dr("LibLink") = "http://www.ksml.edu.tw/informactions/activity/Activity01.aspx"
-        dtRSSLink.Rows.Add(dr)
+            'to datagridview
+            DT_ACTIVE = dt.Clone
+            DT_ACTIVE = dt.Copy
+            dgvActive.DataSource = DT_ACTIVE
 
-        cmbRSSLink.DataSource = dtRSSLink
-        cmbRSSLink.DisplayMember = "LibName"
-        cmbRSSLink.ValueMember = "LibLink"
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+    End Sub
 
+    Private Sub WebBrowser1_Navigated(sender As Object, e As WebBrowserNavigatedEventArgs)
+        Timer1.Start()
+        ToolStripStatusLabel1.Text = "讀取中"
     End Sub
 
     Private Sub ConvwertDataTable(ByRef dt As DataTable)
@@ -184,10 +189,10 @@ Public Class frmMain
                 '取得指定內容
                 Dim dr As DataRow
                 dr = dt.NewRow
-                dr("標題") = Regex.Match(HtmlNode.OuterHtml, ".*<a href.*>(.*?)</a>").Groups(1).Value
-                dr("館別") = Regex.Match(HtmlNode.OuterHtml, ".*<strong.*>(.*?)</strong>").Groups(1).Value
-                dr("日期") = Regex.Match(HtmlNode.OuterHtml, ".*align=""center"">(\[.*?)</td>").Groups(1).Value
-                dr("報名") = ""
+                dr("title") = Regex.Match(HtmlNode.OuterHtml, ".*<a href.*>(.*?)</a>").Groups(1).Value
+                dr("link") = ""
+                dr("author") = Regex.Match(HtmlNode.OuterHtml, ".*<strong.*>(.*?)</strong>").Groups(1).Value
+                dr("pubDate") = Regex.Match(HtmlNode.OuterHtml, ".*align=""center"">(\[.*?)</td>").Groups(1).Value
                 dt.Rows.Add(dr)
             Next
 
@@ -206,5 +211,7 @@ Public Class frmMain
         End If
         loading = False
     End Sub
+
+#End Region
 
 End Class

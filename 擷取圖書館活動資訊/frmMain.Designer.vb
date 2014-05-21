@@ -22,12 +22,14 @@ Partial Class frmMain
     '請不要使用程式碼編輯器進行修改。
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.btnActiveLoad = New System.Windows.Forms.Button()
         Me.dgvActive = New System.Windows.Forms.DataGridView()
         Me.btnEXPORT = New System.Windows.Forms.Button()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.cmbRSSLink = New System.Windows.Forms.ComboBox()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         CType(Me.dgvActive, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.SuspendLayout()
@@ -111,5 +113,6 @@ Partial Class frmMain
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
     Friend WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents cmbRSSLink As System.Windows.Forms.ComboBox
+    Friend WithEvents Timer1 As System.Windows.Forms.Timer
 
 End Class

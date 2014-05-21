@@ -29,9 +29,9 @@ Partial Class frmMain
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.cmbRSSLink = New System.Windows.Forms.ComboBox()
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         CType(Me.dgvActive, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
@@ -94,6 +94,7 @@ Partial Class frmMain
         'cmbRSSLink
         '
         Me.cmbRSSLink.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cmbRSSLink.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbRSSLink.FormattingEnabled = True
         Me.cmbRSSLink.Location = New System.Drawing.Point(84, 3)
         Me.cmbRSSLink.Name = "cmbRSSLink"
@@ -114,7 +115,7 @@ Partial Class frmMain
         'ToolStripStatusLabel1
         '
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(132, 17)
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(132, 15)
         Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
         '
         'frmMain

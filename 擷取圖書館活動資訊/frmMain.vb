@@ -14,14 +14,13 @@ Public Class frmMain
     Dim 高雄htmlStream As Stream
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Me.Text &= " - " & "創作人:Brooke v" & My.Application.Info.Version.ToString
+        Me.Text &= " - " & "Brooke v" & My.Application.Info.Version.ToString
         ToolStripStatusLabel1.Text = ""
         Dim dtRSSLink As New DataTable
         dtRSSLink.Columns.Add("LibName")
         dtRSSLink.Columns.Add("LibLink")
 
         Dim dr As DataRow
-
         dr = dtRSSLink.NewRow
         dr("LibName") = "新北市圖"
         dr("LibLink") = "http://www.tphcc.gov.tw/MainPortal/htmlcnt/rss/ActvInfo"
@@ -46,8 +45,10 @@ Public Class frmMain
     Private Sub btnActiveLoad_Click(sender As Object, e As EventArgs) Handles btnActiveLoad.Click
         If cmbRSSLink.SelectedItem("libName") = "新北市圖" Or cmbRSSLink.SelectedItem("libName") = "台北市圖" Then
             readXmlMethod()
+            AddLinkColumn()
         ElseIf cmbRSSLink.SelectedItem("libName") = "高雄市圖" Then
             readHtmlMethod()
+            AddLinkColumn()
         Else
             MsgBox("cmbRSSLink無此選項")
         End If
@@ -82,6 +83,16 @@ Public Class frmMain
             DT_ACTIVE = dt.Clone()
             DT_ACTIVE = dt.Copy
             dgvActive.DataSource = dt
+
+            For i = 0 To dgvActive.Columns.Count - 1
+                dgvActive.Columns(i).Visible = False
+            Next
+            dgvActive.Columns("link").Visible = False
+
+            dgvActive.Columns("title").Visible = True
+            dgvActive.Columns("author").Visible = True
+            dgvActive.Columns("pubDate").Visible = True
+
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
@@ -98,6 +109,7 @@ Public Class frmMain
         If SaveFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
             Try
                 If (DT_ACTIVE Is Nothing) = False Then
+                    ExportExcelFormat(DT_ACTIVE)
                     Dim ExcelNPOI As New NPOIHelper
                     Dim fs As System.IO.FileStream = New System.IO.FileStream(SaveFileDialog1.FileName, FileMode.Create, FileAccess.Write)
                     Dim data() As Byte = Nothing
@@ -117,12 +129,70 @@ Public Class frmMain
         End If
     End Sub
 
+    Private Sub ExportExcelFormat(DT_ACTIVE As DataTable)
+        Try
+            Dim list As New List(Of String)
+            For Each DataColumn As DataColumn In DT_ACTIVE.Columns
+                Select Case DataColumn.ColumnName
+                    Case "title"
+                    Case "author"
+                    Case "pubDate"
+                    Case Else
+                        list.Add(DataColumn.ColumnName)
+                End Select
+            Next
+
+            For Each s As String In list
+                DT_ACTIVE.Columns.Remove(s)
+            Next
+
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+    End Sub
+
+    Private Sub AddLinkColumn()
+        Dim links As New DataGridViewLinkColumn()
+        With links
+            .UseColumnTextForLinkValue = True
+            .HeaderText = "hyperlink"
+            '.DataPropertyName = "行首文字2"
+            .ActiveLinkColor = Color.White
+            .LinkBehavior = LinkBehavior.SystemDefault
+            .LinkColor = Color.Blue
+            .TrackVisitedState = True
+            .VisitedLinkColor = Color.YellowGreen
+            .Text = "點選網址"
+            .Name = "超連結"
+        End With
+        If dgvActive.Columns.Contains(links.Name) Then dgvActive.Columns.Remove(links.Name)
+        dgvActive.Columns.Add(links)
+    End Sub
+
+    Private Sub DataGridView1_CellClick(sender As Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvActive.CellClick
+        '當使用者點選時，會先判斷哪個column，然後再判斷點選到哪個row，最後取該cell(column)的value
+        Try
+            If e.ColumnIndex <> -1 Then
+                Select Case dgvActive.Columns(e.ColumnIndex).Name
+                    Case "超連結"
+                        If e.RowIndex <> -1 Then
+                            Dim url As String = dgvActive.Rows(e.RowIndex).Cells("link").Value
+                            System.Diagnostics.Process.Start(url)
+                            Exit Select
+                        End If
+                End Select
+            End If
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+    End Sub
+
 #Region "高雄特殊讀取方式"
     Private Sub readHtmlMethod()
         Try
             AddHandler webBrower.Navigated, AddressOf WebBrowser1_Navigated '指定webBrower的Navigated事件給WebBrowser1_Navigated方法處理
             AddHandler Timer1.Tick, AddressOf GetHtml
-            Timer1.Interval = 3000
+            Timer1.Interval = 2000
 
             Dim dt As New DataTable
             dt.Columns.Add("title")
@@ -153,7 +223,7 @@ Public Class frmMain
             DT_ACTIVE = dt.Clone
             DT_ACTIVE = dt.Copy
             dgvActive.DataSource = DT_ACTIVE
-
+            dgvActive.Columns("link").Visible = False
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
@@ -190,7 +260,7 @@ Public Class frmMain
                 Dim dr As DataRow
                 dr = dt.NewRow
                 dr("title") = Regex.Match(HtmlNode.OuterHtml, ".*<a href.*>(.*?)</a>").Groups(1).Value
-                dr("link") = ""
+                dr("link") = "http://www.ksml.edu.tw/informactions/activity/" & Regex.Match(HtmlNode.OuterHtml, ".*<a href=""(.*?)"">").Groups(1).Value
                 dr("author") = Regex.Match(HtmlNode.OuterHtml, ".*<strong.*>(.*?)</strong>").Groups(1).Value
                 dr("pubDate") = Regex.Match(HtmlNode.OuterHtml, ".*align=""center"">(\[.*?)</td>").Groups(1).Value
                 dt.Rows.Add(dr)
@@ -205,13 +275,18 @@ Public Class frmMain
     Private Sub GetHtml(sender As Object, e As EventArgs)
         Timer1.Stop()
         If 高雄tatalPage = -1 Then
-            高雄tatalPage = 1 'webBrower.DocumentText
+            高雄tatalPage = Get高雄tatalPage()
         Else
             高雄htmlStream = webBrower.DocumentStream
         End If
         loading = False
     End Sub
 
+    Private Function Get高雄tatalPage() As Integer
+        Dim s As String = webBrower.DocumentText
+        s = Regex.Match(s, ".*<span id=""ctl00_ContentPlaceHolder1_lblCurPage"">第1頁,共(.*?)筆</span>").Groups(1).Value
+        Return CInt(s) / 10 + 1
+    End Function
 #End Region
 
 End Class

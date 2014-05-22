@@ -98,6 +98,45 @@ Public Class frmMain
         End Try
     End Sub
 
+#Region "datagridview調整"
+    Private Sub AddLinkColumn()
+        Dim links As New DataGridViewLinkColumn()
+        With links
+            .UseColumnTextForLinkValue = True
+            .HeaderText = "hyperlink"
+            '.DataPropertyName = "行首文字2"
+            .ActiveLinkColor = Color.White
+            .LinkBehavior = LinkBehavior.SystemDefault
+            .LinkColor = Color.Blue
+            .TrackVisitedState = True
+            .VisitedLinkColor = Color.YellowGreen
+            .Text = "點選網址"
+            .Name = "超連結"
+        End With
+        If dgvActive.Columns.Contains(links.Name) Then dgvActive.Columns.Remove(links.Name)
+        dgvActive.Columns.Add(links)
+    End Sub
+
+    Private Sub DataGridView1_CellClick(sender As Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvActive.CellClick
+        '當使用者點選時，會先判斷哪個column，然後再判斷點選到哪個row，最後取該cell(column)的value
+        Try
+            If e.ColumnIndex <> -1 Then
+                Select Case dgvActive.Columns(e.ColumnIndex).Name
+                    Case "超連結"
+                        If e.RowIndex <> -1 Then
+                            Dim url As String = dgvActive.Rows(e.RowIndex).Cells("link").Value
+                            System.Diagnostics.Process.Start(url)
+                            Exit Select
+                        End If
+                End Select
+            End If
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+    End Sub
+#End Region
+
+#Region "EXCEL匯出"
     Private Sub btnEXPORT_Click(sender As Object, e As EventArgs) Handles btnEXPORT.Click
         SaveFileDialog1.FileName = "匯出EXCEL.xls"
         SaveFileDialog1.InitialDirectory = Directory.GetCurrentDirectory
@@ -150,42 +189,7 @@ Public Class frmMain
             MsgBox(ex.ToString)
         End Try
     End Sub
-
-    Private Sub AddLinkColumn()
-        Dim links As New DataGridViewLinkColumn()
-        With links
-            .UseColumnTextForLinkValue = True
-            .HeaderText = "hyperlink"
-            '.DataPropertyName = "行首文字2"
-            .ActiveLinkColor = Color.White
-            .LinkBehavior = LinkBehavior.SystemDefault
-            .LinkColor = Color.Blue
-            .TrackVisitedState = True
-            .VisitedLinkColor = Color.YellowGreen
-            .Text = "點選網址"
-            .Name = "超連結"
-        End With
-        If dgvActive.Columns.Contains(links.Name) Then dgvActive.Columns.Remove(links.Name)
-        dgvActive.Columns.Add(links)
-    End Sub
-
-    Private Sub DataGridView1_CellClick(sender As Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvActive.CellClick
-        '當使用者點選時，會先判斷哪個column，然後再判斷點選到哪個row，最後取該cell(column)的value
-        Try
-            If e.ColumnIndex <> -1 Then
-                Select Case dgvActive.Columns(e.ColumnIndex).Name
-                    Case "超連結"
-                        If e.RowIndex <> -1 Then
-                            Dim url As String = dgvActive.Rows(e.RowIndex).Cells("link").Value
-                            System.Diagnostics.Process.Start(url)
-                            Exit Select
-                        End If
-                End Select
-            End If
-        Catch ex As Exception
-            MsgBox(ex.ToString)
-        End Try
-    End Sub
+#End Region
 
 #Region "高雄特殊讀取方式"
     Private Sub readHtmlMethod()

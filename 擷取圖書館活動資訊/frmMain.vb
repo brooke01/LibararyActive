@@ -5,6 +5,7 @@ Imports System.Text
 Imports HtmlAgilityPack
 Imports System.Threading
 Imports System.Text.RegularExpressions
+Imports System.Web.HttpUtility
 
 Public Class frmMain
     Dim DT_ACTIVE As DataTable
@@ -73,7 +74,7 @@ Public Class frmMain
                 Dim dr As DataRow = Nothing
                 dr = dt.NewRow
                 For k = 0 To nodes.Item(j).ChildNodes.Count - 1 'item裡的TAG數為4
-                    dr(k) = nodes.Item(j).ChildNodes.Item(k).InnerXml
+                    dr(k) = htmlDecode(nodes.Item(j).ChildNodes.Item(k).InnerXml)
                 Next
                 dt.Rows.Add(dr)
             Next

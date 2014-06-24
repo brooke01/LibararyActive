@@ -44,8 +44,11 @@ Public Class frmMain
     End Sub
 
     Private Sub btnActiveLoad_Click(sender As Object, e As EventArgs) Handles btnActiveLoad.Click
-        If cmbRSSLink.SelectedItem("libName") = "新北市圖" Or cmbRSSLink.SelectedItem("libName") = "台北市圖" Then
+        If cmbRSSLink.SelectedItem("libName") = "新北市圖" Then
             readXmlMethod()
+            AddLinkColumn()
+        ElseIf cmbRSSLink.SelectedItem("libName") = "台北市圖" Then
+            readXmlMethod台北市圖()
             AddLinkColumn()
         ElseIf cmbRSSLink.SelectedItem("libName") = "高雄市圖" Then
             readHtmlMethod()
@@ -69,12 +72,12 @@ Public Class frmMain
             For i = 0 To singleItemNode.ChildNodes.Count - 1
                 dt.Columns.Add(singleItemNode.ChildNodes.Item(i).Name)
             Next
-            Dim nodes As XmlNodeList = root.SelectNodes("channel/item") '取channel底下所有的item節點
-            For j = 0 To nodes.Count - 1 'item個數為277
+            Dim myItem As XmlNodeList = root.SelectNodes("channel/item") '取channel底下所有的item節點
+            For j = 0 To myItem.Count - 1 'item個數為277
                 Dim dr As DataRow = Nothing
                 dr = dt.NewRow
-                For k = 0 To nodes.Item(j).ChildNodes.Count - 1 'item裡的TAG數為4
-                    dr(k) = htmlDecode(nodes.Item(j).ChildNodes.Item(k).InnerXml)
+                For k = 0 To myItem.Item(j).ChildNodes.Count - 1 'item裡的TAG數為4
+                    dr(k) = HtmlDecode(myItem.Item(j).ChildNodes.Item(k).InnerXml)
                 Next
                 dt.Rows.Add(dr)
             Next
@@ -98,6 +101,66 @@ Public Class frmMain
             MsgBox(ex.ToString)
         End Try
     End Sub
+
+#Region "台北市圖"
+    Private Sub readXmlMethod台北市圖()
+        Try
+            '1讀取XML來源
+            Dim doc As New XmlDocument
+            doc.Load(cmbRSSLink.SelectedValue)
+
+            '2掃描XML所有項目並儲存
+            Dim root As XmlElement = doc.DocumentElement '先生出一個root
+            '*取得第一層所有節點
+            Dim singleItemNode As XmlNode = root.SelectSingleNode("channel/item")
+            Dim dt As New DataTable
+            For i = 0 To singleItemNode.ChildNodes.Count - 1
+                dt.Columns.Add(singleItemNode.ChildNodes.Item(i).Name)
+            Next
+            Dim myItem As XmlNodeList = root.SelectNodes("channel/item") '取channel底下所有的item節點
+            For j = 0 To myItem.Count - 1 'item個數為277
+                Dim dr As DataRow = Nothing
+                dr = dt.NewRow
+
+                For k = 0 To myItem.Item(j).ChildNodes.Count - 1 'item裡的TAG數為4
+
+                    If myItem.Item(j).ChildNodes.Item(k).Name = "pubDate" Then
+                        dr(k) = Format(CType(myItem.Item(j).ChildNodes.Item(k).InnerXml, DateTime), "yyyy/MM/dd")
+                    ElseIf myItem.Item(j).ChildNodes.Item(k).Name = "author" Then
+                        If dr("link") <> "" Then
+                            dr(k) = getAuthor(dr("link"))
+                        End If
+                    Else
+                        dr(k) = HtmlDecode(myItem.Item(j).ChildNodes.Item(k).InnerXml)
+                    End If
+                Next
+                dt.Rows.Add(dr)
+            Next
+
+            '3將項目顯示於dgv
+            DT_ACTIVE = Nothing
+            DT_ACTIVE = dt.Clone()
+            DT_ACTIVE = dt.Copy
+            dgvActive.DataSource = dt
+
+            For i = 0 To dgvActive.Columns.Count - 1
+                dgvActive.Columns(i).Visible = False
+            Next
+            dgvActive.Columns("link").Visible = False
+
+            dgvActive.Columns("title").Visible = True
+            dgvActive.Columns("author").Visible = True
+            dgvActive.Columns("pubDate").Visible = True
+
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+    End Sub
+
+    Private Function getAuthor(p1 As Object) As Object
+        Return "myAuthor"
+    End Function
+#End Region
 
 #Region "datagridview調整"
     Private Sub AddLinkColumn()

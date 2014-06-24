@@ -49,6 +49,7 @@ Partial Class frmMain
         '
         'dgvActive
         '
+        Me.dgvActive.AllowUserToAddRows = False
         Me.dgvActive.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.TableLayoutPanel2.SetColumnSpan(Me.dgvActive, 2)
         Me.dgvActive.Dock = System.Windows.Forms.DockStyle.Fill
